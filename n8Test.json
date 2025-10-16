@@ -1,0 +1,331 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here is the topic to write a blog about: {{ $json.output }}",
+        "options": {
+          "systemMessage": "# Overview\nYou are an expert outline writer. Your job is to generate a structured outline for a blog post with section titles and key points."
+        }
+      },
+      "id": "f14e08a6-2d0d-46ee-8ff8-16696944be38",
+      "name": "Outline Writer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        544,
+        384
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here is the outline: \n\n{{ $json.output }}",
+        "options": {
+          "systemMessage": "=# Overview\nYou are an expert blog evaluator. Revise this outline and ensure it covers the following key criteria: \n(1) Engaging Introduction \n(2) Clear Section Breakdown\n(3) Logical Flow\n(4) Conclusion with Key Takeaways\n\n## Output\nOnly output the revised outline."
+        }
+      },
+      "id": "be50e34a-5917-41cf-bae0-c880de1a24ea",
+      "name": "Outline Evaluation",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        912,
+        384
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here if the revised outline: {{ $json.output }}",
+        "options": {
+          "systemMessage": "=# Overview\nYou are an expert blog writer. Generate a detailed blog post using the outline with well-structured paragraphs and engaging content."
+        }
+      },
+      "id": "3fa7182b-f0ac-4ae3-bb59-e28aabaca06a",
+      "name": "Blog Writer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        1296,
+        384
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-nano",
+        "options": {}
+      },
+      "id": "8fe02320-1256-4ee6-b0ef-35f790e89c7f",
+      "name": "Azure OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "position": [
+        624,
+        608
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "8BOuVjdXNnonoock",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-nano",
+        "options": {}
+      },
+      "id": "c0b1da11-72a0-44f6-afa2-1e06da7f4ff0",
+      "name": "Azure OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "position": [
+        1008,
+        608
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "8BOuVjdXNnonoock",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-nano",
+        "options": {}
+      },
+      "id": "178d9e50-f210-48ad-9d4e-138b34632071",
+      "name": "Azure OpenAI Chat Model2",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "position": [
+        1376,
+        608
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "8BOuVjdXNnonoock",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "0c77bb79-6e9a-4138-94ee-0406659ff711",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -64,
+        384
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI agent specializing in generating blog topic ideas specifically for the Sparrow API testing platform. Your role is to analyze the latest trends, user needs, and industry developments related to API testing and the Sparrow platform. When provided with information about the target audience or content objectives, you will suggest a range of blog topics tailored to Sparrow’s features, use cases, best practices, and integration tips. For each topic, include a clear title, a brief description outlining the blog’s focus, and a note on how it benefits Sparrow users or those interested in API testing. Your recommendations should be relevant, actionable, and designed to help users maximize their experience with the Sparrow API testing platform.",
+        "options": {}
+      },
+      "id": "c1e73c21-740e-42d7-8bca-99d210b490b4",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        160,
+        384
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-nano",
+        "options": {}
+      },
+      "id": "2c8949c4-4d00-4760-b53f-83d813eecb43",
+      "name": "Azure OpenAI Chat Model3",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "position": [
+        256,
+        608
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "8BOuVjdXNnonoock",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1wC_LoTybaf5dQM2rY1aisuI9UFSmibNpHNFZAEfLdW4",
+          "mode": "list",
+          "cachedResultName": "n8test",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wC_LoTybaf5dQM2rY1aisuI9UFSmibNpHNFZAEfLdW4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1308846749,
+          "mode": "list",
+          "cachedResultName": "blog",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wC_LoTybaf5dQM2rY1aisuI9UFSmibNpHNFZAEfLdW4/edit#gid=1308846749"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "output"
+          ],
+          "schema": [
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "3544810a-a93a-47e3-94d5-5bb98da5465d",
+      "name": "Append arrow",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        1664,
+        384
+      ],
+      "typeVersion": 4.6,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wTSQ617eHMWtrq7G",
+          "name": "GoogleAuth"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Outline Writer": {
+      "main": [
+        [
+          {
+            "node": "Outline Evaluation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Outline Evaluation": {
+      "main": [
+        [
+          {
+            "node": "Blog Writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog Writer": {
+      "main": [
+        [
+          {
+            "node": "Append arrow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Outline Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Outline Evaluation",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Blog Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Outline Writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "04e2867cae92a0232b499149872765216a575d2bd8a045505998cf671c85d073"
+  }
+}

@@ -1,0 +1,69 @@
+flowchart TB
+subgraph Internet
+User[User / Client]
+Attacker[Attacker]
+end
+
+
+CDN[CDN / Edge]
+WAF[WAF / API Gateway]
+LB[Load Balancer]
+
+
+subgraph VPC_Private[Private VPC]
+ALB[Application Load Balancer]
+AKS[Kubernetes Cluster / Managed Containers]
+MS1[Microservice A]
+MS2[Microservice B]
+MQ[Message Queue / Event Bus]
+DB[(Managed DB)]
+Cache[(Managed Cache)]
+S3[(Object Storage)]
+Secrets[Secrets Manager]
+Monitoring[Monitoring & Logging]
+IAM[Identity Provider / SSO]
+Bastion[Bastion / Jump Host]
+end
+
+
+subgraph CI_CD[CI / CD & Code Repo]
+Repo[Git Repository]
+Pipeline[CI/CD Pipeline]
+end
+
+
+User -->|HTTPS| CDN --> WAF --> LB --> ALB --> AKS
+Attacker -->|Scanning / DDoS| CDN
+
+
+AKS --> MS1
+AKS --> MS2
+MS1 -->|reads/writes| DB
+MS2 -->|publishes| MQ
+MQ --> MS1
+MS1 --> Cache
+MS1 --> S3
+
+
+Pipeline --> AKS
+Repo --> Pipeline
+Pipeline --> Secrets
+
+
+AKS --> Monitoring
+DB --> Monitoring
+S3 --> Monitoring
+
+
+IAM -->|Authn/Claims| WAF
+IAM -->|OIDC tokens| AKS
+
+
+Bastion -->|Admin SSH| AKS
+Bastion -->|Admin| DB
+
+
+classDef trustBoundary stroke:#ff4d4f,stroke-width:3
+class VPC_Private trustBoundary
+
+
