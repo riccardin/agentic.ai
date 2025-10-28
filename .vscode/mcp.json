@@ -1,0 +1,40 @@
+{
+  "servers": {
+    "awesome-copilot": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--entrypoint",
+        "bash",
+        "ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest",
+        "-c",
+        "apt-get update && apt-get install -y ca-certificates && update-ca-certificates && dotnet /app/McpSamples.AwesomeCopilot.HybridApp.dll"
+      ]
+    },
+
+    "local-mcp-docker": {
+      "type": "stdio",
+      "displayName": "Local MCP (Docker)",
+      "description": "Runs a local MCP server inside Docker using the MCP .NET sample image",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-v",
+        "/etc/ssl/certs:/etc/ssl/certs:ro",
+        "-w",
+        "/workspace",
+        "-p",
+        "5005:5005",
+        "-e",
+        "ASPNETCORE_Kestrel__Certificates__Default__Path=/usr/local/share/ca-certificates/Zscaler_Root_CA.pem",
+        "ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest"
+      ]
+    }
+  }
+}
+
