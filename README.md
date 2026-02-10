@@ -40,7 +40,7 @@ export AZURE_OPENAI_API_VERSION="2023-05-15"
 1. Place your google_credentials.json file in the project directory
 2. The first time you run the script, it will open a browser window for authentication
 3. After successful authentication, a token.pickle file will be created for future use
-4. The script is configured to use the spreadsheet with ID: "1wC_LoTybaf5dQM2rY1aisuI9UFSmibNpHNFZAEfLdW4"
+4. The script is configured to use the spreadsheet with ID: "1#@$wC_LoTybaf54234dQM2rY1a8799isuI9UFSmidfer34bNpHNFZAEfLdW4"
 5. The sheet name is set to "blog"
 ## Usage
 Run the script with:
