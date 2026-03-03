@@ -1,0 +1,56 @@
+flowchart TD
+    %% Nodes
+    Start([Start: Dev Pulls Tag from Master])
+    Branch[Create Feature/Fix Branch]
+    Work[Code, Commit, Push]
+    CI{CI Pipeline\nTests & Coverage}
+    FixCI[Fix Issues]
+    PR[Create Pull Request]
+    
+    %% Logic Gates
+    IsReg[Is QA Regression Active?]
+    IsFix[Is this a Regression Fix?]
+    
+    %% Paths
+    DevDeploy[Deploy to DEV from Branch]
+    ReviewStandard[Standard Code Review]
+    ReviewStrict[Strict Review:\n2 Approvers + Owner]
+    Merge[Merge to Master]
+    
+    %% Deployment
+    ProdDeploy[Deploy to PROD from Master]
+    Tag[Create Tag: YYYY_MMM_ReleaseName]
+    Unlock[Unlock Master Branch]
+    
+    %% Graph Connections
+    Start --> Branch
+    Branch --> Work
+    Work --> CI
+    CI -- Fail --> FixCI
+    FixCI --> Work
+    CI -- Pass --> PR
+    
+    PR --> IsReg
+    
+    %% Regression/Lock Logic
+    IsReg -- YES (Master Locked) --> IsFix
+    
+    IsFix -- NO (New Feature/POC) --> DevDeploy
+    DevDeploy --> Wait[Wait for Lock to End]
+    
+    IsFix -- YES --> ReviewStrict
+    ReviewStrict --> Merge
+    
+    %% Normal Flow
+    IsReg -- NO (Normal Dev) --> ReviewStandard
+    ReviewStandard --> Merge
+    
+    %% Release Flow
+    Merge --> ProdDeploy
+    ProdDeploy --> Tag
+    Tag --> Unlock
+    
+    %% Styling
+    style IsReg fill:#ff9999,stroke:#333,stroke-width:2px
+    style Tag fill:#99ff99,stroke:#333,stroke-width:2px
+    style DevDeploy fill:#ffff99,stroke:#333,stroke-dasharray: 5 5
